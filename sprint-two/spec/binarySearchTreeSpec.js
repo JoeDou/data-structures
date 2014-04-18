@@ -1,4 +1,4 @@
-var assert = chai.assert; 
+var assert = chai.assert;
 
 describe("binarySearchTree", function() {
   var binarySearchTree;
@@ -29,13 +29,37 @@ describe("binarySearchTree", function() {
     assert.isTrue(binarySearchTree.contains(7));
     assert.isFalse(binarySearchTree.contains(8));
   });
-  
+
   it("should execute a callback on every value in a tree using 'depthFirstLog'", function(){
     var array = [];
-    var func = function(value){ array.push(value); }
+    var func = function(value){ array.push(value); };
     binarySearchTree.insert(2);
     binarySearchTree.insert(3);
     binarySearchTree.depthFirstLog(func);
     assert.notStrictEqual(array, [5,2,3]);
+  });
+
+  it("should execute a callback on every value in a tree using 'breadthFirstLog'", function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(8);
+    binarySearchTree.breadthFirstLog(func);
+    expect(array).to.equal([5,3,7,2,4,6,8]);
+  });
+
+  it("should check min and max depth'", function(){
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(1);
+    expect(binarySearchTree.minDepth()).to.equal(3);
+    expect(binarySearchTree.maxDepth()).to.equal(4);
   });
 });
