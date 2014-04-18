@@ -30,9 +30,7 @@ describe("linkedList", function() {
     linkedList.addToTail(4);
     linkedList.addToTail(5);
     expect(linkedList.head.value).to.equal(4);
-    console.log(linkedList)
     linkedList.removeHead();
-        console.log(linkedList) 
     expect(linkedList.head.value).to.equal(5);
   });
 
@@ -49,6 +47,27 @@ describe("linkedList", function() {
     linkedList.addToTail(5);
     linkedList.removeHead();
     assert.isFalse(linkedList.contains(4));
+  });
+
+ it("should have methods named 'addToHead', 'removeTail'", function() {
+    expect(linkedList.addToHead).to.be.a('function');
+    expect(linkedList.removeTail).to.be.a('function');
+  });
+
+
+  it("should designate a new head when new nodes are added", function(){
+    linkedList.addToHead(4);
+    expect(linkedList.head.value).to.equal(4);
+    linkedList.addToHead(5);
+    expect(linkedList.head.value).to.equal(5);
+  });
+
+  it("should remove the head from the list when removeTail is called", function(){
+    linkedList.addToHead(4);
+    linkedList.addToHead(5);
+    expect(linkedList.tail.value).to.equal(4);
+    linkedList.removeTail();
+    expect(linkedList.tail.value).to.equal(5);
   });
 
   // add more tests here to test the functionality of linkedList
