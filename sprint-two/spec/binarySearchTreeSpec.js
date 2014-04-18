@@ -49,7 +49,7 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(6);
     binarySearchTree.insert(8);
     binarySearchTree.breadthFirstLog(func);
-    expect(array).to.equal([5,3,7,2,4,6,8]);
+    expect(JSON.stringify(array)).to.equal(JSON.stringify([5,3,7,2,4,6,8]));
   });
 
   it("should check min and max depth'", function(){
@@ -59,7 +59,24 @@ describe("binarySearchTree", function() {
     binarySearchTree.insert(4);
     binarySearchTree.insert(6);
     binarySearchTree.insert(1);
-    expect(binarySearchTree.minDepth()).to.equal(3);
-    expect(binarySearchTree.maxDepth()).to.equal(4);
+    expect(binarySearchTree.depth(Math.min)).to.equal(2);
+    expect(binarySearchTree.depth(Math.max)).to.equal(4);
+  });
+
+  it("should rebalance tree when max depth exceeds twice the min depth'", function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(6);
+    binarySearchTree.insert(8);
+    binarySearchTree.insert(9);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(11);
+    binarySearchTree.breadthFirstLog(func);
+    // expect(binarySearchTree.depth(Math.min)).to.equal(1);
+    // expect(binarySearchTree.depth(Math.max)).to.equal(11);
+    expect(JSON.stringify(array)).to.equal(JSON.stringify([]));
   });
 });

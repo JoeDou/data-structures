@@ -25,6 +25,11 @@ binaryTreeMethods.insert = function(value){
       this.left.insert(value);
     }
   }
+
+  if (this.depth(Math.max) > 2*this.depth(Math.min)){
+    this.rebalance();
+    console.log("rebalance tree: " + value);
+  }
 };
 binaryTreeMethods.contains = function (value){
   var result = false;
@@ -57,13 +62,19 @@ binaryTreeMethods.depthFirstLog = function (callback){
 
 };
 binaryTreeMethods.breadthFirstLog = function (callback){
+  this.breadthTraverse(function(node){
+    callback(node.value);
+  });
+};
+
+binaryTreeMethods.breadthTraverse = function (callback){
   var queue = [this];
 
   var callbackQueue = function(array){
     var newQueue = [];
 
     for (var i=0; i<array.length; i++){
-      callback(array[i].value);
+      callback(array[i]);
       array[i].left && newQueue.push(array[i].left);
       array[i].right && newQueue.push(array[i].right);
     }
@@ -77,21 +88,21 @@ binaryTreeMethods.breadthFirstLog = function (callback){
 };
 
 binaryTreeMethods.minDepth = function (){
-  var total = 0;
-  var depth = 1;
-  var sum = function(){
-    total++;
-  };
-  this.depthFirstLog(sum);
+  // var total = 0;
+  // var depth = 1;
+  // var sum = function(){
+  //   total++;
+  // };
+  // this.depthFirstLog(sum);
 
-  while(Math.pow(2,depth) < total){
-    depth++;
-  }
+  // while(Math.pow(2,depth) < total){
+  //   depth++;
+  // }
 
-  return depth;
+  // return depth;
 };
 
-binaryTreeMethods.maxDepth = function (){
+binaryTreeMethods.depth = function (func){
 
   var findDepth = function(node){
     var rightValue = 0;
@@ -103,8 +114,77 @@ binaryTreeMethods.maxDepth = function (){
       leftValue = findDepth(node.left);
     }
 
-    return(Math.max(rightValue, leftValue)+1);
+    return(func.call(null,rightValue, leftValue)+1);
   };
 
+  // binaryTreeMethods.depth(Math.min)
+
   return findDepth(this);
+};
+
+binaryTreeMethods.rebalance = function (){
+  var nodesValue =[];
+  var indexArray = [];
+  this.depthFirstLog(function(value){
+    nodesValue.push(value);
+  });
+  nodesValue.sort(function(a,b){return a-b;});
+
+  var sortArray = function(){
+    var queueArray = [];
+
+    for (var i=0; i<arguments.length;i++){
+      var index = Math.floor(arguments[i].length / 2) ;
+      indexArray.push(arguments[i][index]);
+      if (arguments[i].length > 1) {
+        var leftArray = arguments[i].slice(0,index);
+        queueArray.push(leftArray);
+        if (arguments[i].length > 2) {
+          var rightArray = arguments[i].slice(index+1);
+          queueArray.push(rightArray);
+        }
+      }
+    }
+
+    if(nodesValue.length !== indexArray.length){
+      sortArray.apply(null,queueArray);
+    }
+  };
+
+  sortArray(nodesValue);
+
+  console.log(indexArray);
+
+  var nodes = [];
+
+  this.breadthTraverse(function(node){
+    nodes.push(node);
+  });
+
+  for (var i=0; i< indexArray.length; i++) {
+    nodes[i].value = indexArray[i];
+    nodes[i].left = null;
+    nodes[i].right = null;
+  }
+
+  for (var i=1; i<nodes.length; i++){
+    this.insertNode(nodes[i]);
+  }
+
+};
+
+binaryTreeMethods.insertNode = function(node){
+  if (this.value < node.value){
+    if (this.right === null) {
+      this.right = node;
+    } else {
+      this.right.insertNode(node);
+    }
+  } else if (this.value > node.value) {
+    if (this.left === null) {
+      this.left = node;
+    } else {
+      this.left.insertNode(node);
+    }
+  }
 };
