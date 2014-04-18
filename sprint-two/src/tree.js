@@ -1,14 +1,3 @@
-var _ = {};
-
-_.extend = function(obj) {
-    for(var i = 1; i < arguments.length; i++){
-      for(var j in arguments[i]){
-        obj[j] = arguments[i][j];
-      }
-    }
-    return obj;
-  };
-
 var makeTree = function(value){
   var newTree = {};
   newTree.value = value;
