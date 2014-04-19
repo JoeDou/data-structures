@@ -77,6 +77,6 @@ describe("binarySearchTree", function() {
     binarySearchTree.breadthFirstLog(func);
     // expect(binarySearchTree.depth(Math.min)).to.equal(1);
     // expect(binarySearchTree.depth(Math.max)).to.equal(11);
-    expect(JSON.stringify(array)).to.equal(JSON.stringify([]));
+    expect(JSON.stringify(array)).to.equal(JSON.stringify([6,4,8,3,5,7,9,10,11]));
   });
 });
